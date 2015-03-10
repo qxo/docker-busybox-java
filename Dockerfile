@@ -3,10 +3,10 @@ FROM otechlabs/busybox:latest
 RUN opkg-install curl
 
 # Java Version
-ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 31
+ENV JAVA_VERSION_MAJOR 7
+ENV JAVA_VERSION_MINOR 76
 ENV JAVA_VERSION_BUILD 13
-ENV JAVA_PACKAGE jdk
+ENV JAVA_PACKAGE       jdk
 
 # Download and unarchive Java
 RUN curl -kLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie"\
@@ -34,12 +34,7 @@ RUN curl -kLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=ac
            /opt/jdk/jre/lib/amd64/libglass.so \
            /opt/jdk/jre/lib/amd64/libgstreamer-lite.so \
            /opt/jdk/jre/lib/amd64/libjavafx*.so \
-           /opt/jdk/jre/lib/amd64/libjfx*.so &&\
-    mkdir -p /opt/jdk/jre/lib/security
-
-# Add Unlimited JCE Policy JDK8
-ADD US_export_policy.jar /opt/jdk/jre/lib/security/
-ADD local_policy.jar /opt/jdk/jre/lib/security/
+           /opt/jdk/jre/lib/amd64/libjfx*.so
 
 # Set environment
 ENV JAVA_HOME /opt/jdk
