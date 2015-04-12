@@ -1,6 +1,6 @@
 FROM otechlabs/busybox:latest
 
-RUN opkg-install curl
+RUN opkg-install curl gnupg
 
 # Java Version
 ENV JAVA_VERSION_MAJOR 8
