@@ -4,8 +4,8 @@ RUN opkg-install curl
 
 # Java Version
 ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 31
-ENV JAVA_VERSION_BUILD 13
+ENV JAVA_VERSION_MINOR 40
+ENV JAVA_VERSION_BUILD 26
 ENV JAVA_PACKAGE jdk
 
 # Download and unarchive Java
@@ -37,9 +37,11 @@ RUN curl -kLOH "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=ac
            /opt/jdk/jre/lib/amd64/libjfx*.so &&\
     mkdir -p /opt/jdk/jre/lib/security
 
-# Add Unlimited JCE Policy JDK8
-ADD US_export_policy.jar /opt/jdk/jre/lib/security/
-ADD local_policy.jar /opt/jdk/jre/lib/security/
+# Download Java Cryptography Extension
+RUN curl -s -k -L -C - -b "oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION_MAJOR}/jce_policy-${JAVA_VERSION_MAJOR}.zip > /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip \
+    && unzip -d /tmp/ /tmp/jce_policy-${JAVA_VERSION_MAJOR}.zip \
+    && yes |cp -v /tmp/UnlimitedJCEPolicyJDK${JAVA_VERSION_MAJOR}/*.jar /opt/jdk/jre/lib/security/ \
+    && rm -fr /tmp/*
 
 # Set environment
 ENV JAVA_HOME /opt/jdk
